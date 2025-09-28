@@ -1,58 +1,49 @@
-import os
-import ast
+# shopping_list_manager.py
 
-FILE = "shopping_list_manager.py"
-
-def check_file_exists_and_not_empty():
-    if os.path.isfile(FILE) and os.path.getsize(FILE) > 0:
-        return True
-    return False
-
-def check_display_menu_defined(tree):
-    for node in ast.walk(tree):
-        if isinstance(node, ast.FunctionDef) and node.name == "display_menu":
-            return True
-    return False
-
-def check_shopping_list_defined(tree):
-    for node in ast.walk(tree):
-        # look for shopping_list = []
-        if isinstance(node, ast.Assign):
-            for target in node.targets:
-                if isinstance(target, ast.Name) and target.id == "shopping_list":
-                    if isinstance(node.value, ast.List):
-                        return True
-    return False
-
-def check_display_menu_called(tree):
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Call) and getattr(node.func, "id", "") == "display_menu":
-            return True
-    return False
-
-def check_choice_input_number(tree):
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Assign):
-            if isinstance(node.value, ast.Call):
-                if getattr(node.value.func, "id", "") == "input":
-                    return True
-    return False
+def display_menu():
+    print("\nShopping List Manager")
+    print("1. Add Item")
+    print("2. Remove Item")
+    print("3. View List")
+    print("4. Exit")
 
 def main():
-    if not check_file_exists_and_not_empty():
-        print("❌ File does not exist or is empty")
-        return
-    
-    with open(FILE, "r") as f:
-        source = f.read()
-    
-    tree = ast.parse(source)
-    
-    print("Check 1 - File exists and not empty:", "✅ Passed" if check_file_exists_and_not_empty() else "❌ Failed")
-    print("Check 2 - display_menu defined:", "✅ Passed" if check_display_menu_defined(tree) else "❌ Failed")
-    print("Check 3 - shopping_list defined as a list:", "✅ Passed" if check_shopping_list_defined(tree) else "❌ Failed")
-    print("Check 4 - display_menu called:", "✅ Passed" if check_display_menu_called(tree) else "❌ Failed")
-    print("Check 5 - choice input implemented:", "✅ Passed" if check_choice_input_number(tree) else "❌ Failed")
+    shopping_list = []
+
+    while True:
+        display_menu()
+        choice = input("Enter your choice: ").strip()
+
+        if choice == '1':
+            item = input("Enter the item to add: ").strip()
+            if item:
+                shopping_list.append(item)
+                print(f"'{item}' has been added to the shopping list.")
+            else:
+                print("Item cannot be empty.")
+
+        elif choice == '2':
+            item = input("Enter the item to remove: ").strip()
+            if item in shopping_list:
+                shopping_list.remove(item)
+                print(f"'{item}' has been removed from the shopping list.")
+            else:
+                print(f"'{item}' not found in the shopping list.")
+
+        elif choice == '3':
+            if shopping_list:
+                print("\nCurrent Shopping List:")
+                for idx, item in enumerate(shopping_list, start=1):
+                    print(f"{idx}. {item}")
+            else:
+                print("The shopping list is empty.")
+
+        elif choice == '4':
+            print("Goodbye!")
+            break
+
+        else:
+            print("Invalid choice. Please try again.")
 
 if __name__ == "__main__":
     main()
