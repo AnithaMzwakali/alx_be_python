@@ -15,7 +15,7 @@ def convert_to_fahrenheit(celsius):
 def main():
     temp_input = input("Enter the temperature to convert: ")
 
-    # Ensure numeric input
+    # Validate numeric input
     try:
         temperature = float(temp_input)
     except ValueError:
@@ -34,3 +34,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
