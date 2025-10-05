@@ -2,7 +2,6 @@ import unittest
 from simple_calculator import SimpleCalculator
 
 class TestSimpleCalculator(unittest.TestCase):
-    """Unit tests for the SimpleCalculator class."""
 
     def setUp(self):
         self.calc = SimpleCalculator()
@@ -22,7 +21,7 @@ class TestSimpleCalculator(unittest.TestCase):
         self.assertEqual(self.calc.subtract(0, 5), -5)
 
     # Multiplication tests
-    def test_multiply(self):  # <- renamed to match checker
+    def test_multiply(self):
         self.assertEqual(self.calc.multiply(2, 3), 6)
         self.assertEqual(self.calc.multiply(-2, 3), -6)
         self.assertEqual(self.calc.multiply(-2, -3), 6)
@@ -39,4 +38,3 @@ class TestSimpleCalculator(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
